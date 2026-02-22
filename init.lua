@@ -10,7 +10,6 @@ vim.o.smartcase = true
 vim.o.ignorecase = true
 vim.o.hlsearch = false
 vim.o.signcolumn = 'yes'
-vim.o.shell = "pwsh"
 
 -- Remap
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
