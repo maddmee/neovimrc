@@ -15,8 +15,6 @@ local data = vim.fn.stdpath("data")
 local site = vim.fs.joinpath(data, "site")
 local mini_path = vim.fs.joinpath(site, "pack", "deps", "start", "mini.nvim")
 
-vim.opt.runtimepath:append(site)
-
 -- bootstrap mini.nvim (Neovim 0.12 style)
 if not vim.uv.fs_stat(mini_path) then
   vim.notify("Installing mini.nvim...", vim.log.levels.INFO)
@@ -81,14 +79,15 @@ MiniDeps.add("folke/tokyonight.nvim")
 MiniDeps.add("neovim/nvim-lspconfig")
 
 -- mini modules
+require("mini.completion").setup()
 require("mini.files").setup()
 require("mini.pick").setup()
 require("mini.icons").setup()
 require("mini.git").setup()
-require("mini.pairs").setup()
-require("mini.surround").setup()
+require("mini.statusline").setup()
 
 -- UI
+require("tokyonight").setup({ transparent = true })
 vim.cmd.colorscheme("tokyonight")
 
 -- file explorer
