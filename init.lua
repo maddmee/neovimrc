@@ -1,36 +1,4 @@
--- ============================================================================
--- Bootstrap & Environment
-
-vim.env.PATH = table.concat({
-  vim.env.PATH,
-  vim.fn.expand("~/.npm-global/bin"),
-}, ":")
-
--- disable netrw early
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
--- paths
-local data = vim.fn.stdpath("data")
-local site = vim.fs.joinpath(data, "site")
-local mini_path = vim.fs.joinpath(site, "pack", "deps", "start", "mini.nvim")
-
--- bootstrap mini.nvim (Neovim 0.12 style)
-if not vim.uv.fs_stat(mini_path) then
-  vim.notify("Installing mini.nvim...", vim.log.levels.INFO)
-
-  vim.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/nvim-mini/mini.nvim",
-    mini_path,
-  }):wait()
-
-  vim.cmd("packadd mini.nvim")
-end
-
-vim.cmd("packadd mini.nvim")
+vim.loader.enable()
 
 -- ============================================================================
 -- Basic Options
@@ -61,77 +29,39 @@ vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 vim.keymap.set("n", "<leader>s",
-  [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]
 )
 
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 -- ============================================================================
--- mini.deps
-
-local MiniDeps = require("mini.deps")
-MiniDeps.setup()
-
--- ============================================================================
 -- Plugins
 
-MiniDeps.add("folke/tokyonight.nvim")
-MiniDeps.add("neovim/nvim-lspconfig")
+vim.pack.add({
+	{ src = "https://github.com/nvim-mini/mini.nvim" },
+	{ src = "https://github.com/folke/tokyonight.nvim" },
+	{ src = "https://github.com/neovim/nvim-lspconfig" },
+	{ src = "https://github.com/mason-org/mason.nvim" },
+	{ src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+})
 
--- mini modules
+require("mason").setup()
 require("mini.completion").setup()
 require("mini.files").setup()
 require("mini.pick").setup()
 require("mini.icons").setup()
 require("mini.git").setup()
 require("mini.statusline").setup()
+require("mason-lspconfig").setup({ automatic_installation = true })
 
--- UI
+-- theme
 require("tokyonight").setup({ transparent = true })
 vim.cmd.colorscheme("tokyonight")
 
 -- file explorer
-vim.keymap.set("n", "<leader>e", function()
-  require("mini.files").open()
-end)
+vim.keymap.set("n", "<leader>e", function() require("mini.files").open() end)
 
 -- picker
-vim.keymap.set("n", "<leader>ff", function()
-  require("mini.pick").builtin.files()
-end)
-vim.keymap.set("n", "<leader>fb", function()
-  require("mini.pick").builtin.buffers()
-end)
-vim.keymap.set("n", "<leader>fg", function()
-  require("mini.pick").builtin.grep_live()
-end)
-
--- ============================================================================
--- LSP
-
--- install
-local function ensure(cmd, install_cmd)
-  if vim.fn.executable(cmd) == 0 then
-    vim.notify("Installing " .. cmd)
-    vim.system(install_cmd):wait()
-  end
-end
-
-ensure("gopls", {
-  "go", "install", "golang.org/x/tools/gopls@latest",
-})
-
-ensure("vtsls", {
-  "npm", "i", "-g", "@vtsls/language-server", "typescript",
-})
-
-ensure("vue-language-server", {
-  "npm", "i", "-g", "@vue/language-server",
-})
-
--- enable
-vim.lsp.enable({
-  "gopls",
-  "vtsls",
-  "vue_ls",
-})
+vim.keymap.set("n", "<leader>ff", function() require("mini.pick").builtin.files() end)
+vim.keymap.set("n", "<leader>fb", function() require("mini.pick").builtin.buffers() end)
+vim.keymap.set("n", "<leader>fg", function() require("mini.pick").builtin.grep_live() end)
