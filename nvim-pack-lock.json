@@ -1,5 +1,13 @@
 {
   "plugins": {
+    "kanagawa.nvim": {
+      "rev": "aef7f5cec0a40dbe7f3304214850c472e2264b10",
+      "src": "https://github.com/rebelot/kanagawa.nvim"
+    },
+    "lualine.nvim": {
+      "rev": "47f91c416daef12db467145e16bed5bbfe00add8",
+      "src": "https://github.com/nvim-lualine/lualine.nvim"
+    },
     "mason-lspconfig.nvim": {
       "rev": "037398b9ce4a53ba48d5f94765c641a1fd16d906",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
@@ -11,6 +19,10 @@
     "mini.nvim": {
       "rev": "af5f75c9ce572a4d1f0c77d6fb4ea764d16c1b3c",
       "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "monokai-pro.nvim": {
+      "rev": "d8884d4473667c48bd17a68d08383d38839136a3",
+      "src": "https://github.com/loctvl842/monokai-pro.nvim"
     },
     "nvim-lspconfig": {
       "rev": "16812abf0e8d8175155f26143a8504e8253e92b0",
